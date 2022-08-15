@@ -17,6 +17,10 @@ const  Job = db.define ("job", {
     contact_email: {
         type: Sequelize.STRING,
     },
-})
+});
+
+Job.sync().then(() => {
+    console.log ("The table has been created successfully!");
+});
 
 module.exports = Job;

@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const db = require("../config/database");
 const Job = require("../models/Job");
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 
 // Get the job list
 router.get("/", (req, res) =>
@@ -65,6 +67,18 @@ router.post("/add", (req, res) => {
       .then((job) => res.redirect("/jobs"))
       .catch((err) => console.log(err));
   }
+});
+
+// Search for jobs
+router.get("/search", (req, res) => {
+  const { term } = req.query;
+
+  //make lowercase
+  term = term.toLowerCase();
+
+  Job.findAll({ where: { skills: { [Op.like]: "%" + term + "%" } } })
+    .then((jobs) => res.render("jobs", { jobs }))
+    .catch((err) => console.log(err));
 });
 
 module.exports = router;

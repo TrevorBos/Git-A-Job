@@ -1,5 +1,9 @@
 const Sequelize = require("sequelize");
-module.exports = new Sequelize("gitajobdb", "postgres", "Bashi1996", {
+const dotenv = require("dotenv");
+
+dotenv.config();
+
+module.exports = new Sequelize("gitajobdb", "postgres", process.env.DB_PW, {
   host: "localhost",
   dialect: "postgres",
   operatorsAliases: false,
