@@ -19,7 +19,6 @@
   },
   "homepage": "https://github.com/TrevorBos/Git-A-Job#readme",
   "dependencies": {
-    "@handlebars/allow-prototype-access": "^1.0.5",
     "body-parser": "^1.20.0",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
@@ -29,7 +28,7 @@
     "sequelize": "^6.21.3"
   },
   "devDependencies": {
-    "handlebars": "^4.5.0",
+    "handlebars": "^4.5.3",
     "nodemon": "^2.0.19"
   }
 }
