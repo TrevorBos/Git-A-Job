@@ -3,8 +3,8 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-module.exports = new Sequelize("gitajobdb", "postgres", process.env.DB_PW, {
-  host: "localhost",
+module.exports = new Sequelize(process.env.DB_DBName, process.env.DB_User, process.env.DB_PW, {
+  host: process.env.DB_Host,
   dialect: "postgres",
   operatorsAliases: false,
 
