@@ -15,30 +15,56 @@ router.get("/", (req, res) =>
 );
 
 //Display the add a job form
-router.get('/add', (req, res) => res.render('add'));
+router.get("/add", (req, res) => res.render("add"));
 
 // Add a job to the list
 router.post("/add", (req, res) => {
-  const data = {
-    title: "Rocket League Developer",
-    skills: "Coding, JS, C#, Animation, CSS",
-    budget: "$150000",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    contact_email: "rocketrocket@rockert.rocket",
-  };
+  let { title, skills, budget, description, contact_email } = req.body;
+  let errors = [];
 
-  let { title, skills, budget, description, contact_email } = data;
+  if (!title) {
+    errors.push({ text: "Please add a title to your job." });
+  }
+  if (!skills) {
+    errors.push({ text: "Please add skills to you job." });
+  }
+  if (!description) {
+    errors.push({ text: "Please add a description to your job." });
+  }
+  if (!contact_email) {
+    errors.push({ text: "Please add contact email." });
+  }
 
-  Job.create({
-    title,
-    skills,
-    description,
-    budget,
-    contact_email,
-  })
-    .then((job) => res.redirect("/jobs"))
-    .catch((err) => console.log(err));
+  //   check errors here
+  if (errors.length > 0) {
+    res.render("add", {
+      errors,
+      title,
+      skills,
+      budget,
+      description,
+      contact_email,
+    });
+  } else {
+    if (!budget) {
+      budget = "Unknown";
+    } else {
+      budget = `$${budget}`;
+    }
+
+    //fixes an issue where user couldnt search for something because of an uppercase.
+    skills = skills.toLowerCase().replace(/,[]+/g, `,`);
+
+    Job.create({
+      title,
+      skills,
+      description,
+      budget,
+      contact_email,
+    })
+      .then((job) => res.redirect("/jobs"))
+      .catch((err) => console.log(err));
+  }
 });
 
 module.exports = router;
