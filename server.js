@@ -15,6 +15,9 @@ const app = express();
 
 app.get("/", (req, res) => res.send("INDEX"));
 
+// Job routing
+app.use('/jobs', require('./routes/jobRoutes'));
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, console.log(`Server running on port ${PORT}`));
