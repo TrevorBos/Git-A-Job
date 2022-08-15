@@ -6,15 +6,19 @@ const Job = require("../models/Job");
 // Get the job list
 router.get("/", (req, res) =>
   Job.findAll()
-    .then((jobs) => {
-      console.log(jobs);
-      res.sendStatus(200);
-    })
-    .catch((err) => console.log(err))
+    .then((jobs) =>
+      res.render("jobs", {
+        jobs,
+      })
+    )
+    .catch((err) => res.render("error", { error: err }))
 );
 
+//Display the add a job form
+router.get('/add', (req, res) => res.render('add'));
+
 // Add a job to the list
-router.get("/add", (req, res) => {
+router.post("/add", (req, res) => {
   const data = {
     title: "Rocket League Developer",
     skills: "Coding, JS, C#, Animation, CSS",
@@ -24,18 +28,17 @@ router.get("/add", (req, res) => {
     contact_email: "rocketrocket@rockert.rocket",
   };
 
-  let {title, skills, budget, description, contact_email} = data;
+  let { title, skills, budget, description, contact_email } = data;
 
-  Job.create ({
+  Job.create({
     title,
     skills,
     description,
     budget,
-    contact_email
+    contact_email,
   })
-  .then(job => res.redirect('/jobs'))
-  .catch(err => console.log(err));
-
+    .then((job) => res.redirect("/jobs"))
+    .catch((err) => console.log(err));
 });
 
 module.exports = router;

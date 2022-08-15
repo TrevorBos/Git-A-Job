@@ -1,10 +1,10 @@
 const express = require("express");
-const expressHbs = require("express-handlebars");
+const exphbs = require("express-handlebars");
 const bodyParser = require("body-parser");
 const path = require("path");
 
 // Database connection
-const db = require('./config/database');
+const db = require("./config/database");
 
 // Test the database
 db.authenticate()
@@ -13,10 +13,17 @@ db.authenticate()
 
 const app = express();
 
+// HANDLEBARS MIDDLEWARE
+app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
+app.set("view engine", "handlebars");
+
+// Set static folder
+app.use(express.static(path.join(__dirname, "public")));
+
 app.get("/", (req, res) => res.send("INDEX"));
 
 // Job routing
-app.use('/jobs', require('./routes/jobRoutes'));
+app.use("/jobs", require("./routes/jobRoutes"));
 
 const PORT = process.env.PORT || 3000;
 
