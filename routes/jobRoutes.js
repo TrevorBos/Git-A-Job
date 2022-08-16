@@ -6,15 +6,14 @@ const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
 // Get the job list
-router.get("/", (req, res) =>
-  Job.findAll()
-    .then((jobs) =>
-      res.render("jobs", {
-        jobs,
-      })
-    )
-    .catch((err) => res.render("error", { error: err }))
-);
+router.get("/", async (req, res) => {
+  const findJobs = await Job.findAll();
+  const allJobs = findJobs.map((job) => job.get({ plain: true }));
+  console.log(allJobs);
+  return res.render("jobs", {
+    jobs:allJobs,
+  });
+});
 
 //Display the add a job form
 router.get("/add", (req, res) => res.render("add"));
