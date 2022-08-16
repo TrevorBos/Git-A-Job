@@ -69,15 +69,19 @@ router.post("/add", (req, res) => {
 });
 
 // Search for jobs
-router.get("/search", (req, res) => {
-  const { term } = req.query;
+router.get("/search", async (req, res) => {
+  let { term } = req.query;
 
   //make lowercase
-  term = term.toLowerCase();
+  // term = term.toLowerCase();
+let jobList = await Job.findAll({ where: { skills: { [Op.like]: "%" + term.toLowerCase() + "%" } } });
 
-  Job.findAll({ where: { skills: { [Op.like]: "%" + term + "%" } } })
-    .then((jobs) => res.render("jobs", { jobs }))
-    .catch((err) => console.log(err));
+let allJobs = jobList.map((job) => job.get({ plain: true }));
+console.log(allJobs);
+return res.render("jobs", {
+  jobs:allJobs,
+});
+  
 });
 
 module.exports = router;
